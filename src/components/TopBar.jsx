@@ -1,26 +1,26 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import Logo from '../../assets/img/topbar-logo.png';
 import { FontAwesome6 } from '@expo/vector-icons';
 
-const Search = ({ isActive }) => {
+const Search = ({ isActive, handler }) => {
     if (!isActive) return;
 
     return (
-        <Text style={styles.options}>
+        <TouchableHighlight activeOpacity={1} underlayColor={'rgba(0,0,0,0)'} onPress={() => handler(true)}>
             <FontAwesome6 name="filter" size={20} color="#fff" />
-        </Text>
+        </TouchableHighlight>
     );
 }
 
-const TopBar = ({ searchActive = false }) => {
+const TopBar = ({ searchActive = false, handleModal }) => {
     return (
         <View style={[styles.topBar, styles.flexRow]}>
             <Image source={Logo} style={styles.logo} />
 
             <View style={styles.flexRow}>
-                <Search isActive={searchActive} />
+                <Search isActive={searchActive} handler={handleModal} />
             </View>
         </View>
     );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     topBar: {
         paddingTop: Constants.statusBarHeight + 10,
         paddingBottom: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         justifyContent: 'space-between',
         backgroundColor: '#3DA891',
     },

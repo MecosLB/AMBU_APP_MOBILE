@@ -6,6 +6,25 @@ import TicketModal from './TicketModal.jsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { API_URL } from '../data/api.js';
+import FiltersModal from './FiltersModal.jsx';
+import Toast from 'react-native-toast-message';
+
+const alert = (msg, type = 'success') => {
+    const titleDict = {
+        success: 'Éxito',
+        error: 'Error',
+        info: 'Notifición',
+
+    }
+
+    if (!msg) return;
+
+    return Toast.show({
+        type: type,
+        text1: titleDict[type],
+        text2: msg,
+    });
+}
 
 const Loading = ({ ticketsArray = [], selectTicket }) => {
     if (!ticketsArray.length)
@@ -23,7 +42,7 @@ const Loading = ({ ticketsArray = [], selectTicket }) => {
     );
 }
 
-const TicketsList = () => {
+const TicketsList = ({ modalFilter, setModalFilter }) => {
     // Tickets
     const [ticketsArray, setTicketsArray] = useState([]);
     const [activeTicket, setActiveTicket] = useState({});
@@ -53,6 +72,8 @@ const TicketsList = () => {
     }
 
     const displayTickets = async () => {
+        setTicketsArray([]);
+
         const { data } = await axios
             .post(`${API_URL}/ticket/get-ticket`, { ...filters })
             .catch(({ response }) => {
@@ -64,6 +85,9 @@ const TicketsList = () => {
             });
 
         setTicketsArray([...data]);
+
+        if (!data.length)
+            return alert('No hay resultados para esta búsqueda por el momento', 'error');
     }
 
     const selectTicket = (_uid = '') => {
@@ -79,6 +103,8 @@ const TicketsList = () => {
             <Loading ticketsArray={ticketsArray} selectTicket={selectTicket} />
 
             <TicketModal isVisible={modalTicket} handleModal={setModalTicket} {...activeTicket} />
+
+            <FiltersModal isVisible={modalFilter} handleModal={setModalFilter} filters={filters} setFilters={setFilters} />
         </View>
 
     );

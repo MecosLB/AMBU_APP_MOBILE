@@ -1,6 +1,6 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Modal, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Header from './Ticket/Header';
 import Description from './Ticket/Description';
