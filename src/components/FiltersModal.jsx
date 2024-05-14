@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     },
     select: {
         marginTop: -10,
-        width: '90%'
+        width: '90%',
     },
     filterBtn: {
         borderRadius: 8,

@@ -4,7 +4,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Home, Settings, NewTicket } from '../screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, View, Text } from 'react-native';
-import LoginForm from '../components/LoginForm';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +19,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         backgroundColor: '#299AB1',
         borderTopWidth: 0,
+        zIndex: 100,
     },
     flexCenter: {
         justifyContent: 'center',
