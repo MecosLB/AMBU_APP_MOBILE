@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from "react-native";
 import TopBar from '../components/TopBar';
 import Department from '../components/NewTicket/Department';
 import Category from '../components/NewTicket/Category';
 import Title from '../components/NewTicket/Title';
 import { useFocusEffect } from '@react-navigation/native';
+import Priority from '../components/NewTicket/Priority';
 
 export default function NewTicket({ navigation }) {
     // Reset screen
     const [entered, setEntered] = useState(true);
     // Ticket steps
     const [categoryStep, inCategoryStep] = useState(false);
+    const [priorityStep, inPriorityStep] = useState(false);
+    const [evidenceStep, inEvidenceStep] = useState(false);
     // Ticket info
     const [ticketInfo, setTicketInfo] = useState({});
 
@@ -23,9 +26,15 @@ export default function NewTicket({ navigation }) {
                 setEntered(false);
                 setTicketInfo({});
                 inCategoryStep(false);
+                inPriorityStep(false);
             }
         }, [])
     );
+
+    // TESTIN LOG ONLY
+    useEffect(() => {
+        console.log(ticketInfo);
+    }, [ticketInfo]);
 
     if (!entered) return;
 
@@ -36,9 +45,11 @@ export default function NewTicket({ navigation }) {
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 <Title />
 
-                <Department styles={styles} currentTicket={ticketInfo} addToTicket={setTicketInfo} nextStep={inCategoryStep} />
+                <Department styles={styles} currentTicket={ticketInfo} addToTicket={setTicketInfo} nextStep={inCategoryStep} isSelected={categoryStep} />
 
-                <Category styles={styles} isCurrentStep={categoryStep} />
+                <Category styles={styles} isCurrentStep={categoryStep} currentTicket={ticketInfo} addToTicket={setTicketInfo} nextStep={inPriorityStep} isSelected={priorityStep} />
+
+                <Priority styles={styles} isCurrentStep={priorityStep} currentTicket={ticketInfo} addToTicket={setTicketInfo} nextStep={inEvidenceStep} isSelected={evidenceStep} />
             </ScrollView>
         </View>
     );
@@ -77,6 +88,13 @@ const styles = StyleSheet.create({
     },
     select: {
         marginTop: -10,
-        // color: 'red',
+    },
+    optionSelected: {
+        fontSize: 24,
+        fontFamily: 'Montserrat_600SemiBold',
+        textDecorationLine: 'underline',
+        textTransform: 'capitalize',
+        color: '#fff',
+        marginVertical: 8,
     }
 });

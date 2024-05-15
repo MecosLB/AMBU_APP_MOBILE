@@ -68,7 +68,7 @@ const UserSettings = ({ navigation }) => {
         navigation.navigate('Login');
     }
 
-    const changePassword = () => {
+    const changePassword = async () => {
         setNewPassword(newPassword.trim());
         setConfirmPassword(confirmPassword.trim());
 
@@ -77,6 +77,22 @@ const UserSettings = ({ navigation }) => {
 
         if (newPassword !== confirmPassword)
             return alert('Las contraseñas no coinciden. Vuelva a intentarlo', 'error');
+
+        const { _id } = JSON.parse(await AsyncStorage.getItem('user'));
+
+        const bodyObj = {
+            id: _id,
+            password: newPassword,
+        }
+
+        const { data } = await axios
+            .post(`${API_URL}/user/change-password`, bodyObj)
+            .catch(({ response }) => {
+                const { data } = response;
+
+                if (response.status !== '500')
+                    alert(data.message, 'error');
+            });
 
         alert('Cambio de contraseña realizado');
         setModalVisiblePassword(false);
@@ -111,6 +127,7 @@ const UserSettings = ({ navigation }) => {
     return (
         <View style={styles.view}>
             <Header {...user} />
+
             <View style={styles.container}>
 
                 {/* Change Password */}

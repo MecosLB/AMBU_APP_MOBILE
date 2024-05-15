@@ -7,7 +7,7 @@ const Park = ({ park }) => {
         <View style={styles.park}>
             <FontAwesome6 name="tree" style={styles.parkIcon} />
             <Text style={styles.parkText}>
-                {park}
+                {park.name}
             </Text>
         </View>
     );

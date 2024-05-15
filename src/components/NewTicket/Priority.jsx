@@ -3,31 +3,17 @@ import { Text, View } from 'react-native';
 import FadeInGlobe from './FadeInGlobe';
 import { TouchableHighlight } from '@gorhom/bottom-sheet';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
 
-const CATEGORIES = [
-    'fontaneria',
-    'electricidad',
-    'seguridad',
-    'estancias infantiles',
-    'forestal',
-];
-
-const CategorySelected = ({ category, setCategory, isSelected = false, styles, handleSubmit }) => {
+const PrioritySelected = ({ priority, setPriority, isSelected = false, styles, handleSubmit }) => {
     if (!isSelected)
         return (
             <>
                 <Picker
-                    selectedValue={category}
-                    onValueChange={val => setCategory(val)}
+                    selectedValue={priority}
+                    onValueChange={val => setPriority(val)}
                     style={styles.select}
                 >
-                    {CATEGORIES.map((category, index) => {
-                        return (
-                            <Picker.Item key={index} label={category[0].toUpperCase() + category.slice(1)} value={JSON.stringify({ id: index, name: category })} color="#fff" textTransform="capitalize" />
-                        );
-                    })}
+                    <Picker.Item key={index} label={category[0].toUpperCase() + category.slice(1)} value={JSON.stringify({ id: index, name: category })} color="#fff" textTransform="capitalize" />
                 </Picker>
 
                 <TouchableHighlight style={{ alignItems: 'flex-end' }} activeOpacity={1} underlayColor={'rgba(0,0,0,0)'} onPress={handleSubmit}>
@@ -52,8 +38,8 @@ const CategorySelected = ({ category, setCategory, isSelected = false, styles, h
     );
 }
 
-const Category = ({ styles, isCurrentStep, currentTicket, addToTicket, nextStep, isSelected }) => {
-    const [category, setCategory] = useState('');
+const Priority = ({ styles, isCurrentStep, currentTicket, addToTicket, nextStep, isSelected }) => {
+    const [priority, setPriority] = useState('');
 
     if (!isCurrentStep) return;
 
@@ -68,17 +54,21 @@ const Category = ({ styles, isCurrentStep, currentTicket, addToTicket, nextStep,
     }
 
     return (
-        <FadeInGlobe style={[styles.globe, styles.bgMain, { marginBottom: 24 }]}>
+        <FadeInGlobe style={[styles.globe, styles.bgMain]}>
             <View style={[styles.globeDecorator, styles.bgMain]}></View>
 
             <Text style={styles.globeText}>
                 Selecciona la
-                <Text style={styles.semibold}> categoría</Text>
+                <Text style={styles.semibold}> prioridad</Text>
             </Text>
 
-            <CategorySelected category={category} setCategory={setCategory} isSelected={isSelected} styles={styles} handleSubmit={handleSubmit} />
+            <TouchableHighlight style={{ alignItems: 'flex-end' }} activeOpacity={1} underlayColor={'rgba(0,0,0,0)'} onPress={() => {
+                console.log('next')
+            }}>
+                <FontAwesome6 name="circle-arrow-right" size={32} color="#fff" />
+            </TouchableHighlight>
         </FadeInGlobe>
     );
 }
 
-export default Category;
+export default Priority;

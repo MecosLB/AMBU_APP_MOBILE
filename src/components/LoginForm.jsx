@@ -86,7 +86,7 @@ const LoginForm = ({ navigation }) => {
             });
 
         const { user, session } = data;
-        await AsyncStorage.setItem('user', JSON.stringify(user[0].agent_data[0]));
+        await AsyncStorage.setItem('user', JSON.stringify(user));
         await AsyncStorage.setItem('token', session._id);
         alert('Sesión iniciada correctamente');
         navigation.navigate('Layout');

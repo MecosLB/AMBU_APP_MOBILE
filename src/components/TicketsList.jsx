@@ -63,11 +63,11 @@ const TicketsList = ({ modalFilter, setModalFilter }) => {
 
     // General functions
     const setDepartment = async () => {
-        const { department } = JSON.parse(await AsyncStorage.getItem('user'));
-
+        const { department_data } = JSON.parse(await AsyncStorage.getItem('user'));
+        console.log(department_data);
         setFilters({
             ...filters,
-            department: department,
+            department: department_data._id,
         });
     }
 
