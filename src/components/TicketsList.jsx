@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import tickets from '../data/tickets.js';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import TicketItem from './TicketItem.jsx';
 import TicketModal from './TicketModal.jsx';
@@ -51,31 +50,17 @@ const TicketsList = ({ modalFilter, setModalFilter }) => {
     // Modal
     const [modalTicket, setModalTicket] = useState(false);
 
-    // Initital set of user department
-    useEffect(() => {
-        setDepartment();
-    }, []);
-
     // Filter tickets each time a filter change
     useEffect(() => {
         displayTickets();
     }, [filters]);
 
-    // General functions
-    const setDepartment = async () => {
-        const { department_data } = JSON.parse(await AsyncStorage.getItem('user'));
-        
-        setFilters({
-            ...filters,
-            department: department_data._id,
-        });
-    }
-
     const displayTickets = async () => {
         setTicketsArray([]);
+        const { department_data } = JSON.parse(await AsyncStorage.getItem('user'));
 
         const { data } = await axios
-            .post(`${API_URL}/ticket/get-ticket`, { ...filters })
+            .post(`${API_URL}/ticket/get-ticket`, { ...filters, department: department_data._id })
             .catch(({ response }) => {
                 const { data } = response;
 

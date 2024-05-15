@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ScrollView, StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import TopBar from '../components/TopBar';
 import Department from '../components/NewTicket/Department';
@@ -13,6 +13,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import axios from 'axios';
 import { API_URL } from '../data/api';
 import Toast from 'react-native-toast-message';
+import * as Location from 'expo-location';
 
 const alert = (msg, type = 'success') => {
     const titleDict = {
@@ -91,28 +92,38 @@ export default function NewTicket({ navigation }) {
     // General functions
     const sendTicket = async () => {
         setLoading(true);
+        const coordinates = await requestLocation();
 
-        const { data } = await axios
-            .post(`${API_URL}/ticket`, { ...ticketInfo })
-            .catch(({ response }) => {
-                const { data } = response;
+        // const { data } = await axios
+        //     .post(`${API_URL}/ticket`, { ...ticketInfo, coordinates: coordinates })
+        //     .catch(({ response }) => {
+        //         const { data } = response;
 
-                console.log(data);
-                if (response.status !== '500')
-                    alert(data.message, 'error');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        //         console.log(data);
+        //         if (response.status !== '500')
+        //             alert(data.message, 'error');
+        //     })
+        //     .finally(() => {
+        //         setLoading(false);
+        //     });
 
-
-        console.log(data);
+        // console.log(Object.keys(data));
+        setLoading(false);
+        alert('Incidencia registrada exitosamente', 'success');
+        navigation.navigate('Home');
     }
 
-    // TESTIN LOG ONLY
-    useEffect(() => {
-        console.log(ticketInfo);
-    }, [ticketInfo]);
+    const requestLocation = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync()
+
+        if (status !== 'granted')
+            return alert('Permiso para acceder a la localización denegado', 'error');
+
+        const { coords: coordinates } = await Location.getCurrentPositionAsync({}),
+            { latitude: lat, longitude: lng } = coordinates;
+
+        return { lat: lat, lng: lng };
+    }
 
     if (!entered) return;
 
