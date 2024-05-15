@@ -14,6 +14,7 @@ import axios from 'axios';
 import { API_URL } from '../data/api';
 import Toast from 'react-native-toast-message';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const alert = (msg, type = 'success') => {
     const titleDict = {
@@ -92,22 +93,22 @@ export default function NewTicket({ navigation }) {
     // General functions
     const sendTicket = async () => {
         setLoading(true);
-        const coordinates = await requestLocation();
+        const coordinates = await requestLocation(),
+            { agent: agentId } = JSON.parse(await AsyncStorage.getItem('user'));
 
-        // const { data } = await axios
-        //     .post(`${API_URL}/ticket`, { ...ticketInfo, coordinates: coordinates })
-        //     .catch(({ response }) => {
-        //         const { data } = response;
+        const { data } = await axios
+            .post(`${API_URL}/ticket`, { ...ticketInfo, coordinates: coordinates, agent: agentId })
+            .catch(({ response }) => {
+                const { data } = response;
 
-        //         console.log(data);
-        //         if (response.status !== '500')
-        //             alert(data.message, 'error');
-        //     })
-        //     .finally(() => {
-        //         setLoading(false);
-        //     });
+                console.log(data);
+                if (response.status !== '500')
+                    alert(data.message, 'error');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
 
-        // console.log(Object.keys(data));
         setLoading(false);
         alert('Incidencia registrada exitosamente', 'success');
         navigation.navigate('Home');

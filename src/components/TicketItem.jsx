@@ -2,7 +2,13 @@ import React from "react";
 import { Image, Text, View, StyleSheet, TouchableHighlight } from "react-native";
 import { Montserrat_400Regular, Montserrat_600SemiBold, Montserrat_800ExtraBold, useFonts } from '@expo-google-fonts/montserrat';
 
-const TicketItem = ({ uid, department_data: department, category, comment, evidence, handlePress }) => {
+const priorityColor = {
+    baja: '#198754',
+    media: '#ffc107',
+    alta: '#dc3545',
+}
+
+const TicketItem = ({ uid, department_data: department, category, comment, evidence, priority, handlePress }) => {
     const [fontsLoaded] = useFonts({
         Montserrat_400Regular,
         Montserrat_600SemiBold,
@@ -19,7 +25,8 @@ const TicketItem = ({ uid, department_data: department, category, comment, evide
 
                 <View>
                     <Text style={styles.subTitle}>
-                        {uid}
+                        {uid} -
+                        <Text style={{ color: `${priorityColor[priority.toLowerCase()]}` }}> {priority}</Text>
                     </Text>
                     <Text style={styles.title} numberOfLines={1}>
                         {`${department.name} - ${category}`}
