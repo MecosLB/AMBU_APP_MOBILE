@@ -7,14 +7,118 @@ import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
 const CATEGORIES = [
-    'fontaneria',
-    'electricidad',
-    'seguridad',
-    'estancias infantiles',
-    'forestal',
-];
+    {
+        "_id": "6644385c2cd35d7bc961699a",
+        "name": "flora y fauna",
+        "department": "663fc6c8e9a623f71c2e293f"
+    },
+    {
+        "_id": "664439082cd35d7bc961699c",
+        "name": "plaga",
+        "department": "663fc6c8e9a623f71c2e293f"
+    },
+    {
+        "_id": "6644393b2cd35d7bc961699e",
+        "name": "árbol",
+        "department": "663fc6c8e9a623f71c2e293f"
+    },
+    {
+        "_id": "66443a012cd35d7bc96169a0",
+        "name": "postes",
+        "department": "663fc79fe9a623f71c2e2941"
+    },
+    {
+        "_id": "66443a1d2cd35d7bc96169a2",
+        "name": "cableado",
+        "department": "663fc79fe9a623f71c2e2941"
+    },
+    {
+        "_id": "66443a5e2cd35d7bc96169a4",
+        "name": "bombilla",
+        "department": "663fc79fe9a623f71c2e2941"
+    },
+    {
+        "_id": "66443b252cd35d7bc96169a6",
+        "name": "especies invasoras",
+        "department": "663fcd4fe9a623f71c2e2943"
+    },
+    {
+        "_id": "66443b6b2cd35d7bc96169a8",
+        "name": "biodiversidad",
+        "department": "663fcd4fe9a623f71c2e2943"
+    },
+    {
+        "_id": "66443b852cd35d7bc96169aa",
+        "name": "contaminación",
+        "department": "663fcd4fe9a623f71c2e2943"
+    },
+    {
+        "_id": "66443bba2cd35d7bc96169ac",
+        "name": "instalaciones",
+        "department": "663fcd59e9a623f71c2e2945"
+    },
+    {
+        "_id": "66443bde2cd35d7bc96169ae",
+        "name": "accesos",
+        "department": "663fcd59e9a623f71c2e2945"
+    },
+    {
+        "_id": "66443bf62cd35d7bc96169b0",
+        "name": "drenaje",
+        "department": "663fcd59e9a623f71c2e2945"
+    },
+    {
+        "_id": "66443c4b2cd35d7bc96169b2",
+        "name": "recolección residuos",
+        "department": "663fcd65e9a623f71c2e2947"
+    },
+    {
+        "_id": "66443c702cd35d7bc96169b4",
+        "name": "mantenimiento externo",
+        "department": "663fcd65e9a623f71c2e2947"
+    },
+    {
+        "_id": "66443c962cd35d7bc96169b6",
+        "name": "programas y educación",
+        "department": "663fcd65e9a623f71c2e2947"
+    },
+    {
+        "_id": "66443ce12cd35d7bc96169b8",
+        "name": "cámaras de vigilancia",
+        "department": "663fcd71e9a623f71c2e2949"
+    },
+    {
+        "_id": "66443cf72cd35d7bc96169ba",
+        "name": "robos",
+        "department": "663fcd71e9a623f71c2e2949"
+    },
+    {
+        "_id": "66443d132cd35d7bc96169bc",
+        "name": "seguridad",
+        "department": "663fcd71e9a623f71c2e2949"
+    },
+    {
+        "_id": "66443d502cd35d7bc96169be",
+        "name": "impacto ambiental",
+        "department": "663fcd78e9a623f71c2e294b"
+    },
+    {
+        "_id": "66443d6f2cd35d7bc96169c0",
+        "name": "uso público",
+        "department": "663fcd78e9a623f71c2e294b"
+    },
+    {
+        "_id": "66443da52cd35d7bc96169c2",
+        "name": "salud pública",
+        "department": "663fcd78e9a623f71c2e294b"
+    }
+]
 
-const CategorySelected = ({ category, setCategory, isSelected = false, styles, handleSubmit }) => {
+let deptCategories;
+
+const CategorySelected = ({ category, setCategory, isSelected = false, styles, handleSubmit, currentTicket }) => {
+    deptCategories = [...CATEGORIES].filter(({ department }) => department === currentTicket.department);
+
     if (!isSelected)
         return (
             <>
@@ -23,9 +127,9 @@ const CategorySelected = ({ category, setCategory, isSelected = false, styles, h
                     onValueChange={val => setCategory(val)}
                     style={styles.select}
                 >
-                    {CATEGORIES.map((category, index) => {
+                    {deptCategories.map(({ _id, name }) => {
                         return (
-                            <Picker.Item key={index} label={category[0].toUpperCase() + category.slice(1)} value={JSON.stringify({ id: index, name: category })} color="#fff" textTransform="capitalize" />
+                            <Picker.Item key={_id} label={name[0].toUpperCase() + name.slice(1)} value={JSON.stringify({ id: _id, name: name })} color="#fff" textTransform="capitalize" />
                         );
                     })}
                 </Picker>
@@ -76,7 +180,7 @@ const Category = ({ styles, isCurrentStep, currentTicket, addToTicket, nextStep,
                 <Text style={styles.semibold}> categoría</Text>
             </Text>
 
-            <CategorySelected category={category} setCategory={setCategory} isSelected={isSelected} styles={styles} handleSubmit={handleSubmit} />
+            <CategorySelected category={category} setCategory={setCategory} isSelected={isSelected} styles={styles} handleSubmit={handleSubmit} currentTicket={currentTicket} />
         </FadeInGlobe>
     );
 }

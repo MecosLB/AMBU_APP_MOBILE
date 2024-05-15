@@ -57,7 +57,6 @@ const UserSettings = ({ navigation }) => {
             .catch(({ response }) => {
                 const { data } = response;
 
-                console.log(data);
                 if (response.status !== '500')
                     alert(data.message, 'error');
             });

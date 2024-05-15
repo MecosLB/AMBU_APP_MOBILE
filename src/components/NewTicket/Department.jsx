@@ -68,7 +68,7 @@ const DepartmentSelected = ({ department, setDepartment, isSelected = false, sty
 }
 
 const Department = ({ styles, currentTicket, addToTicket, nextStep, isSelected }) => {
-    const [department, setDepartment] = useState('');
+    const [department, setDepartment] = useState(JSON.stringify({ id: DEPARTMENT[0]._id, name: DEPARTMENT[0].name }));
 
     // General functions
     const handleSubmit = () => {

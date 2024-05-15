@@ -64,7 +64,7 @@ const TicketsList = ({ modalFilter, setModalFilter }) => {
     // General functions
     const setDepartment = async () => {
         const { department_data } = JSON.parse(await AsyncStorage.getItem('user'));
-        console.log(department_data);
+        
         setFilters({
             ...filters,
             department: department_data._id,
@@ -79,7 +79,6 @@ const TicketsList = ({ modalFilter, setModalFilter }) => {
             .catch(({ response }) => {
                 const { data } = response;
 
-                console.log(data);
                 if (response.status !== '500')
                     alert(data.message, 'error');
             });
